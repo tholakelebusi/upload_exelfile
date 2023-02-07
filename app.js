@@ -5,11 +5,21 @@ var path       = require('path');
 var XLSX       = require('xlsx');
 var multer     = require('multer');
 
+//init app
+var app = express();
 
+//set the template engine
+app.set('view engine','ejs');
+
+//fetch data from the request
+app.use(bodyParser.urlencoded({extended:false}));
+
+//static folder path
+app.use(express.static(path.resolve(__dirname,'public')));
 
 const Customer  = require('./customerModel')
 
-let result;
+
 
 //multer
 var storage = multer.diskStorage({
@@ -31,35 +41,24 @@ mongoose.connect('mongodb+srv://tholakelebusi:12345@cluster0.blwxz.mongodb.net/t
 .then(()=>{console.log('connected to db')})
 .catch((error)=>{console.log('error',error)});
 
-//init app
-var app = express();
 
-//set the template engine
-app.set('view engine','ejs');
-
-//fetch data from the request
-app.use(bodyParser.urlencoded({extended:false}));
-
-//static folder path
-app.use(express.static(path.resolve(__dirname,'public')));
-
-//collection schema
 
 
 
 
 app.get('/',(req,res)=>{
+  // res.render('login'); -----making login page a landing page
    Customer.find((err,data)=>{
        if(err){
            console.log(err)
        }else{
            if(data!=''){
-               res.render('home',{result:data}&&'graph',{result:data});
+               res.render('home',{result:data});
              
            }else{
             this.results=result
-               res.render('graph',{result:{}});
-               console.log("me"+this.results);
+             
+
             
            }
        }
@@ -78,7 +77,7 @@ app.post('/',upload.single('excel'),(req,res)=>{
         
 
             this.dataJson=data;
-            res.render('graph');
+          
             console.log(this.dataJson)
            
           
