@@ -47,7 +47,7 @@ mongoose.connect('mongodb+srv://tholakelebusi:12345@cluster0.blwxz.mongodb.net/t
 
 
 app.get('/',(req,res)=>{
-  // res.render('login'); -----making login page a landing page
+  
    Customer.find((err,data)=>{
        if(err){
            console.log(err)
@@ -75,9 +75,7 @@ app.post('/',upload.single('excel'),(req,res)=>{
               console.log(err);
           }else{
         
-
-            this.dataJson=data;
-          
+            res.redirect('/');  
             console.log(this.dataJson)
            
           
